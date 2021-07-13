@@ -1,0 +1,58 @@
+{
+  "name": "spacetimediagrams",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "postbuild": "node ./postbuild.js",
+    "lint": "vue-cli-service lint"
+  },
+  "keywords": [
+    "impvis"
+  ],
+  "author": "Robert King",
+  "license": "BSD-3-Clause",
+  "dependencies": {
+    "@impvis/components": "^1.0.0",
+    "@impvis/components-katex": "^1.0.0",
+    "core-js": "^3.6.5",
+    "d3": "^7.0.0",
+    "mathjs": "^9.4.4",
+    "p5": "^1.4.0",
+    "vue": "^2.6.11",
+    "vue-awesome": "^4.1.0"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^4.5.13",
+    "@vue/cli-plugin-eslint": "^4.5.13",
+    "@vue/cli-service": "^4.5.3",
+    "archiver": "^5.0.2",
+    "babel": "^6.23.0",
+    "babel-eslint": "^10.1.0",
+    "chalk": "^4.1.0",
+    "eslint": "^7.30.0",
+    "eslint-plugin-vue": "^7.13.0",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "impvisConfig": {
+    "three": false,
+    "babel": true,
+    "eslint": true,
+    "katex": true
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {}
+  }
+}
