@@ -50,7 +50,7 @@
 -->
 
             <!-- The below line works on browsers which implement the HTML5 spec properly (e.g. Chrome, Firefox, Opera) -->
-             <input type="range" id="speedSlider" list="speed_list" min="-0.9" max="0.9" step="0.001" value="0.00" oninput="SpaceTimeModule.speedChanged(this.value)" />
+             <input type="range" id="speedSlider" list="speed_list" min="-0.9" max="0.9" step="0.001" value="0.00" />
 
             <!-- <datalist id="speed_list">
                 <option value="-0.9" label="-0.90 c">
@@ -66,9 +66,9 @@
 
             <div id="sliderClear"></div>
 
-		    <button type="button" id="LaserButton" onclick="SpaceTimeModule.FireLaser()">Laser</button>
-		    <button type="button" id="MissileButton" onclick="SpaceTimeModule.FireMissile()">Missile</button>
-		    <button type="button" id="StartStopButton" onclick="SpaceTimeModule.StartStopSimulation()">Start</button>
+		    <button type="button" id="LaserButton" >Laser</button>
+		    <button type="button" id="MissileButton" >Missile</button>
+		    <button type="button" id="StartStopButton" >Start</button>
 		</div>
         </div>
         </div>
@@ -79,6 +79,7 @@
 <script>
 import {name} from '../package.json';
 import RGraph from './lib/RGraph.js'
+import './css/spacetime-intro.css';
 export default {
     name:"App",
     data(){
@@ -493,7 +494,9 @@ var SpaceTimeModule = (function () {
 
     var drawBase = function () {
         backgroundGameContext.clearRect(0, basey, baseWidth, baseHeight);
+        console.log(launchpad)
         backgroundGameContext.drawImage(launchpad, 0, basey);
+        
         };
 
     var drawUFO = function (ufoPosition, ufoVelocity) {
@@ -731,11 +734,11 @@ var SpaceTimeModule = (function () {
     };
 
     var loadImages = function () {
-        launchpad.src = "mothership.png";
+        launchpad.src = "./assets/mothership.png";
         launchpad.onload = function () {
             drawBase();
         };
-        ufo.src = "rocket.png";
+        ufo.src = "./assests/rocket.png";
         ufo.onload = function () {
             drawUFO(startPosition);
             showCountdown(); // has to be run AFTER the background images are drawn
@@ -746,7 +749,6 @@ var SpaceTimeModule = (function () {
     //
 
     // ** Main program code
-    console.log("hi");
     setButtons();
     window.addEventListener('resize', refreshPage, false); // Register an event listener to call refreshPage() when window is resized
     setupPage();
@@ -832,6 +834,9 @@ var SpaceTimeModule = (function () {
 
 <style>
 html{
+    overflow:hidden;
+}
+template{
     overflow:hidden;
 }
 </style>
