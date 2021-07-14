@@ -1,94 +1,4 @@
-<template>
-    <div>
-        <iv-visualisation :title="projectName">
-            <template #hotspots>
-                <iv-pane position="left" format="push">
-                    <iv-sidebar-content>
-                        <iv-sidebar-section title="Context">
-                            <p>
-                The year: 2096...</p>
-            <p>
-                Your mission: to master the navigational controls of the Starship Imperial.
-            </p>
-            <p>
-                (This is not as easy as it sounds at relativistic speeds!)
-            </p>
-            <p>
-             Observers on the mother ship will be tracking your progress on a Minkowski spacetime diagram.
-            </p>
-            <p>
-                NOTE: You have been equipped with a laser gun and missiles, but use them sparingly!
-            </p>
-                        </iv-sidebar-section>
-                    </iv-sidebar-content>
-                </iv-pane>
-            </template>
-            <body>
-		
-        <div class="container">
-        <div class="centre">
-
-		<div class="gameFloat" id="buttonDiv">
-            <div id="graphDiv">
-                <canvas id="graphCanvas"></canvas>
-                <canvas id="graphMissileCanvas"></canvas>
-                <canvas id="backgroundGraphCanvas">This browser does not support HTML5 graphics. Please try another, more modern browser.</canvas>
-            </div>
-            <div id="gameDiv">
-                <canvas id="gameCanvas"></canvas>
-    		    <canvas id="backgroundGameCanvas"></canvas>
-                <div id="scale">
-                    <p id="labelNextScreen" class="floatright">-</p>
-                    <p id="labelScreen" class="floatleft">-</p>
-                    <p id="speedLabel">VELOCITY: 0.000 c</p>
-                </div>
-            </div>
-
-            <!-- The below line works on browsers which do NOT implement the HTML5 spec properly (e.g. IE) -->
-<!--        
-            <input type="range" id="speedSlider" list="speed_list" min="-0.9" max="0.9" step="0.001" value="0.00" onchange="SpaceTimeModule.speedChanged(this.value)" />
--->
-
-            <!-- The below line works on browsers which implement the HTML5 spec properly (e.g. Chrome, Firefox, Opera) -->
-             <input type="range" id="speedSlider" list="speed_list" min="-0.9" max="0.9" step="0.001" value="0.00" oninput="SpaceTimeModule.speedChanged(this.value)" />
-
-            <!-- <datalist id="speed_list">
-                <option value="-0.9" label="-0.90 c">
-                <option value="-0.45" label="-0.45 c">
-                <option value="0" label="0.00 c">
-                <option value="0.45" label="0.45 c">
-                <option value="0.9" label="0.90 c">
-            </datalist> -->
-
-            <div id ="minusOneLabel">-0.9 c</div>
-            <div id ="plusOneLabel">+0.9 c</div>
-            <div id ="zeroLabel">&nbsp;0.0 c</div>
-
-            <div id="sliderClear"></div>
-
-		    <button type="button" id="LaserButton" onclick="SpaceTimeModule.FireLaser()">Laser</button>
-		    <button type="button" id="MissileButton" onclick="SpaceTimeModule.FireMissile()">Missile</button>
-		    <button type="button" id="StartStopButton" onclick="SpaceTimeModule.StartStopSimulation()">Start</button>
-		</div>
-        </div>
-        </div>
-	</body>
-        </iv-visualisation>
-    </div>
-</template>
-<script>
-import {name} from '../package.json';
-import RGraph from './lib/RGraph.js'
-export default {
-    name:"App",
-    data(){
-        return {
-            projectName: name
-        }
-    },
-    mounted(){
-        /*eslint-disable */
-        // Workarounds for different browsers
+﻿// Workarounds for different browsers
 window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
                               window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 window.cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;
@@ -117,8 +27,8 @@ var SpaceTimeModule = (function () {
     var baseWidth = 33;                     // Width of the mothership sprite
     var leftGutter = 50;                    // width of gutter to left of the graph
     var rightGutter = 30;                   // width of gutter to right of the graph
-    // var backgroundWidth = 400;              // pixel width of the background square
-    // var backgroundHeight = 100;             // pixel height of the background square
+    var backgroundWidth = 400;              // pixel width of the background square
+    var backgroundHeight = 100;             // pixel height of the background square
 
     var basey;                              // y coordinate of mothership sprite
     var gameCanvasHeight;		            // Width of the canvas
@@ -139,7 +49,7 @@ var SpaceTimeModule = (function () {
         var xSpeed = 0;
         var myTime = 0;
 
-        var clockTick = function (currentTime) {
+        clockTick = function (currentTime) {
             var myTimeInterval = currentTime - myTime;
             if (myTimeInterval > 0) {
                 myTime = currentTime;
@@ -147,7 +57,7 @@ var SpaceTimeModule = (function () {
             }
         };
 
-        var updatePosition = function (myTimeInterval) {
+        updatePosition = function (myTimeInterval) {
             xPosition += xSpeed * myTimeInterval / 1000; // myTimeInterval is in millisecs so convert to secs
 
             // check for return to mother ship
@@ -212,7 +122,7 @@ var SpaceTimeModule = (function () {
     var gameContext = gameCanvas.getContext("2d");
     var backgroundGameContext = backgroundGameCanvas.getContext("2d");
     var graphDataContext = graphCanvas.getContext("2d");
-    // var graphMissileContext = graphMissileCanvas.getContext("2d");
+    var graphMissileContext = graphMissileCanvas.getContext("2d");
     var labelScreen = document.getElementById("labelScreen");
     var labelNextScreen = document.getElementById("labelNextScreen");
     var objectGraph = null;
@@ -375,19 +285,19 @@ var SpaceTimeModule = (function () {
             backgroundGraph = new RGraph.Scatter('backgroundGraphCanvas', []);
             setUpBackgroundGraph(backgroundGraph);
             backgroundGraph.Draw();
-        }
+        };
 
         // dynamic, data-only, graph for the ufo's worldline
         if (!objectGraph) {
             objectGraph = new RGraph.Scatter('graphCanvas', [])
             setUpGraph(objectGraph, [ufoWorldLineColour]);
-        }
+        };
 
         // dynamic, data-only, graph for missiles (e.g. lasers)
         if (!missileGraph) {
             missileGraph = new RGraph.Scatter('graphMissileCanvas', [])
             setUpGraph(missileGraph, missileColours);
-        }
+        };
 
         // Copy over the data points to the ufo worldline graph
         objectGraph.data[0] = graphData;
@@ -395,15 +305,15 @@ var SpaceTimeModule = (function () {
         // Copy over the data sets to the missile worldlines graph
         // Need to do these individually as simply setting "missileGraph.data = graphMissileData"
         // doesn't work for some reason.
-        for (var i = 0; i < graphMissileData.length; i++) {
+        for (i = 0; i < graphMissileData.length; i++) {
             missileGraph.data[i] = graphMissileData[i];
-        }
+        };
 
         objectGraph.Draw();
         missileGraph.Draw();
     };
 
-    var showTimeUpMessage = function () {
+    showTimeUpMessage = function () {
 
         showCountdown(); // has to be run AFTER the background images are drawn
         showLasersRemaining();
@@ -414,7 +324,7 @@ var SpaceTimeModule = (function () {
         gameContext.fillText("TIME UP", gameCanvasWidth / 2, (gameCanvasHeight + ufoSize / 2) / 2);
     };
 
-    var showCountdown = function () {
+    showCountdown = function () {
         var textRight = 98 * gameCanvasWidth / 100;
         var textTop = gameCanvasHeight / 6;
         var counterTime = (maxTime * 1000 - currentTime) / 1000;
@@ -429,7 +339,7 @@ var SpaceTimeModule = (function () {
         
     };
 
-    var showLasersRemaining = function () {
+    showLasersRemaining = function () {
         var textTop = gameCanvasHeight / 6;
         gameContext.clearRect(0, 0, 2 * gameCanvasWidth / 3, textTop + 1);
 
@@ -440,7 +350,7 @@ var SpaceTimeModule = (function () {
 
     };
 
-    var updateGraph = function (currentPosition) {
+    updateGraph = function (currentPosition) {
         var n;
         var numMissiles = missiles.length;
         var MissilePosition;
@@ -454,13 +364,13 @@ var SpaceTimeModule = (function () {
                 if (MissilePosition > 0) { // check whether missile worldline has disappeared off the left of the graph
                     if (missileData[n][1] && MissilePosition !== missiles[n].startPosition) {
                         missileData[n][0] = missileData[n][1];
-                    }
+                    };
                     graphMissileData[n - 1][1] = [MissilePosition, currentTime / 1000, 1];
                     missileData[n][1] = [MissilePosition, currentTime / 1000, 1];
                     missileGraph.data[n - 1] = missileData[n];
-                }
-            }
-        }
+                };
+            };
+        };
 
         graphData.push([currentPosition, currentTime / 1000, 1]);
         objectGraph.data[0].push([currentPosition, currentTime / 1000, 1]);
@@ -479,11 +389,11 @@ var SpaceTimeModule = (function () {
         missileGraph.PlotData();
     };
 
-    var currentScreen = function (x) {
+    currentScreen = function (x) {
         return Math.floor(x / gameWidthLightSec);
     };
 
-    var rect = function (theContext, x, y, w, h) {
+    rect = function (theContext, x, y, w, h) {
         theContext.beginPath();
         theContext.rect(x, y, w, h);
         theContext.closePath();
@@ -491,12 +401,12 @@ var SpaceTimeModule = (function () {
         theContext.stroke();
     };
 
-    var drawBase = function () {
+    drawBase = function () {
         backgroundGameContext.clearRect(0, basey, baseWidth, baseHeight);
         backgroundGameContext.drawImage(launchpad, 0, basey);
         };
 
-    var drawUFO = function (ufoPosition, ufoVelocity) {
+    drawUFO = function (ufoPosition, ufoVelocity) {
         var ufox = ((ufoPosition / gameWidthLightSec) % 1) * gameCanvasWidth - ufoSize / 2;
         //var length = Math.round(ufoSize * Math.sqrt(1 - ufoVelocity * ufoVelocity)); // contracted length - commented out as not currently illustrating length contraction
 
@@ -507,22 +417,22 @@ var SpaceTimeModule = (function () {
         }
         else {
             gameContext.drawImage(ufo, ufoSize, 0, ufoSize, ufoSize, ufox, ufoy, ufoSize, ufoSize);
-        }
+        };
 
     };
 
     // This function draws the missiles and laser pulses
-    var drawMissiles = function () {
+    drawMissiles = function () {
         var beamLength;
         var n;
         var missileScreen;
 
         n = 1;
-        var numMissiles = missiles.length;
+        numMissiles = missiles.length;
         for (; n < numMissiles; n++) {
-            // var rocketX = rocket1.getPosition();
+            rocketX = rocket1.getPosition();
             missiles[n].missileTick(currentTime);
-            var missileX = missiles[n].Position;
+            missileX = missiles[n].Position;
 
             missileScreen = currentScreen(missileX); // find out which screen the missile is on
             if (missileScreen === ufoScreen) { // only display missile if it's on the same screen as the ufo
@@ -533,28 +443,28 @@ var SpaceTimeModule = (function () {
 
                 gameContext.beginPath();
 
-                var missilePlotX = ((missileX / gameWidthLightSec) % 1) * gameCanvasWidth;
+                missilePlotX = ((missileX / gameWidthLightSec) % 1) * gameCanvasWidth;
 
                 if (missilePlotX >= 0) {
                     gameContext.moveTo(missilePlotX, missilePlotY);
                     gameContext.lineTo(missilePlotX + beamLength, missilePlotY);
-                }
+                };
 
                 gameContext.fill();
                 gameContext.stroke();
-            }
-        }
+            };
+        };
 
     }
 
-    var drawRandomStars = function () {
+    drawRandomStars = function () {
         var counter = 1;
         randomNumber.setSeed(ufoScreen + 1); // cannot use zero as a seed, so add one to the current screen
         backgroundGameContext.clearRect(0, 0, gameCanvasWidth, gameCanvasHeight); // clear
         for (; counter < visibleStars; counter++) {
-            var x = randomNumber.rnd() * gameCanvasWidth;
-            var y = randomNumber.rnd() * gameCanvasHeight;
-            var brightness = randomNumber.rnd();
+            x = randomNumber.rnd() * gameCanvasWidth;
+            y = randomNumber.rnd() * gameCanvasHeight;
+            brightness = randomNumber.rnd();
             backgroundGameContext.fillStyle = "rgba(" + 255 + "," + 255 + "," + 255 + "," + (brightness) + ")";
             backgroundGameContext.strokeStyle = "rgba(" + 255 + "," + 255 + "," + 255 + "," + (brightness) + ")";
             rect(backgroundGameContext, x, y, 1, 1);
@@ -565,12 +475,12 @@ var SpaceTimeModule = (function () {
         document.getElementById("StartStopButton").textContent = simulationRunning ? "Stop" : "Start";
     };
 
-    var updateScale = function () {
+    updateScale = function () {
         labelScreen.textContent = ufoScreen * gameWidthLightSec;
         labelNextScreen.textContent = (ufoScreen + 1) * gameWidthLightSec;
     };
 
-    var timerTick = function () {
+    timerTick = function () {
 
         currentTime = Date.now() - timeZero;
 
@@ -584,10 +494,10 @@ var SpaceTimeModule = (function () {
         else {
             doAnimation();
             timer = requestAnimationFrame(timerTick);
-        }
+        };
     };
 
-    var doAnimation = function () {
+    doAnimation = function () {
         var oldScreen = ufoScreen;
         var currentPosition = rocket1.getPosition(currentTime);
         var ufoVelocity = rocket1.getSpeed();
@@ -598,7 +508,7 @@ var SpaceTimeModule = (function () {
         if (currentTime > (oldTime + 100)) { // only update graph every 100 ms (to optimise for speed)
             oldTime = currentTime;
             updateGraph(currentPosition);
-        }
+        };
 
         ufoScreen = currentScreen(currentPosition); // find out which screen the ufo is on
         if (ufoScreen != oldScreen) {
@@ -607,8 +517,8 @@ var SpaceTimeModule = (function () {
             drawRandomStars();
             if (ufoScreen == 0) {
                 drawBase();
-            }
-        }
+            };
+        };
 
         showCountdown(); // has to be run AFTER the background images are drawn
 
@@ -616,7 +526,7 @@ var SpaceTimeModule = (function () {
         if (ufoVelocity === 0) {
             document.getElementById("speedSlider").value = 0;
             document.getElementById("speedLabel").innerHTML = "VELOCITY: " + Number(0).toFixed(3) + " c";
-        }
+        };
     };
 
     runSimulation = function () {
@@ -664,12 +574,12 @@ var SpaceTimeModule = (function () {
     };
 
     // this function is called when the browser window is resized
-    var refreshPage = function () {
+    refreshPage = function () {
         setupPage();
 
         if (ufoScreen == 0) {
             drawBase();
-        }
+        };
 
         drawUFO(rocket1.getPosition());
 
@@ -730,7 +640,7 @@ var SpaceTimeModule = (function () {
         //
     };
 
-    var loadImages = function () {
+    loadImages = function () {
         launchpad.src = "mothership.png";
         launchpad.onload = function () {
             drawBase();
@@ -746,7 +656,7 @@ var SpaceTimeModule = (function () {
     //
 
     // ** Main program code
-    console.log("hi");
+
     setButtons();
     window.addEventListener('resize', refreshPage, false); // Register an event listener to call refreshPage() when window is resized
     setupPage();
@@ -763,7 +673,7 @@ var SpaceTimeModule = (function () {
             }
             else {
                 stopSimulation();
-            }
+            };
         },
         FireLaser: function () {
             if (simulationRunning && lasersRemaining > 0) {
@@ -786,7 +696,7 @@ var SpaceTimeModule = (function () {
                 // set colours of graph lines to the updated list of missile worldline colours
                 missileGraph.Set('line.colors', missileColours);
                 
-            }
+            };
         },
         FireMissile: function () {
             if (simulationRunning && missilesRemaining > 0) {
@@ -812,7 +722,7 @@ var SpaceTimeModule = (function () {
                 // set colours of graph lines to the updated list of missile worldline colours
                 missileGraph.Set('line.colors', missileColours);
 
-            }
+            };
         },
         speedChanged: function (newSpeed) {
             newSpeed = parseFloat(newSpeed); // for some reason the range input control sends its value as a string, so need to convert to number
@@ -824,14 +734,3 @@ var SpaceTimeModule = (function () {
 
 })();
 
-    }
-
-}
-    
-</script>
-
-<style>
-html{
-    overflow:hidden;
-}
-</style>
