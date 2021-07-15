@@ -42,7 +42,7 @@ p.credits {
 #gameDiv {
     display: block;
     position: static;
-    margin: 0px auto 10px auto;
+    margin: 0px auto 15px auto;
 }
 
 canvas {
@@ -99,7 +99,7 @@ canvas {
     margin: 0px 0px 0px 0px;
     overflow: hidden;
     display: block;
-    font: normal 16px 'VT323', sans-serif;
+    font: normal 20px 'VT323', sans-serif;
 }
 
 #scale p {
@@ -145,7 +145,7 @@ canvas {
     overflow: hidden;
 }
 
-button {
+#LaserButton,#MissileButton,#StartStopButton{
 	display: inline-block;
 	float: right;
 	margin: 0px 5px -0px 5px;

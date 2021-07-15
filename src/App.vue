@@ -77,14 +77,14 @@
     </div>
 </template>
 <script>
-import {name} from '../package.json';
+
 import RGraph from './lib/RGraph.js'
 import './css/spacetime-intro.css';
 export default {
     name:"App",
     data(){
         return {
-            projectName: name
+            projectName: "Spacetime Diagrams"
         }
     },
     mounted(){
@@ -494,7 +494,6 @@ var SpaceTimeModule = (function () {
 
     var drawBase = function () {
         backgroundGameContext.clearRect(0, basey, baseWidth, baseHeight);
-        console.log(launchpad)
         backgroundGameContext.drawImage(launchpad, 0, basey);
         
         };
@@ -734,11 +733,11 @@ var SpaceTimeModule = (function () {
     };
 
     var loadImages = function () {
-        launchpad.src = "./assets/mothership.png";
+        launchpad.src = "mothership.png";
         launchpad.onload = function () {
             drawBase();
         };
-        ufo.src = "./assests/rocket.png";
+        ufo.src = "rocket.png";
         ufo.onload = function () {
             drawUFO(startPosition);
             showCountdown(); // has to be run AFTER the background images are drawn
@@ -825,7 +824,26 @@ var SpaceTimeModule = (function () {
     };
 
 })();
+        document.getElementById("LaserButton").onmousedown = function(e){
+            SpaceTimeModule.FireLaser();
+            return e.preventDefault();
+        };
 
+        document.getElementById("MissileButton").onmousedown = function(e){
+            SpaceTimeModule.FireMissile();
+            return e.preventDefault();
+        };
+
+        document.getElementById("StartStopButton").onmousedown = function(e){
+            SpaceTimeModule.StartStopSimulation();
+            return e.preventDefault();
+        };
+
+        document.getElementById("speedSlider").oninput = function(e){
+            SpaceTimeModule.speedChanged(this.value);
+            return e.preventDefault();
+        };
+        
     }
 
 }
@@ -833,10 +851,5 @@ var SpaceTimeModule = (function () {
 </script>
 
 <style>
-html{
-    overflow:hidden;
-}
-template{
-    overflow:hidden;
-}
+
 </style>

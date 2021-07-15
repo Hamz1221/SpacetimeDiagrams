@@ -14,7 +14,7 @@
   "author": "Robert King",
   "license": "BSD-3-Clause",
   "dependencies": {
-    "@impvis/components": "^1.0.0",
+    "@impvis/components": "^1.4.0",
     "@impvis/components-katex": "^1.0.0",
     "core-js": "^3.6.5",
     "d3": "^7.0.0",
